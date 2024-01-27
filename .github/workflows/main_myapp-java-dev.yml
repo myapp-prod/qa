@@ -10,8 +10,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: dev
 
     steps:
       - uses: actions/checkout@v4
@@ -45,12 +47,10 @@ jobs:
         with:
           name: java-app
       
-      - name: Login to Azure
+     - name: Azure Login
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_86884BB36FB5411FA1222C660C0B7758 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_016D2F6662F840F2BC6BB948D3693C77 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F291DC7BC54540299536F2844E9EEB8C }}
+          creds: '${{ secrets.AZURE_CREDENTIALS }}' 
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
