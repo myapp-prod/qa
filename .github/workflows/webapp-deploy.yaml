@@ -29,7 +29,9 @@ jobs:
           java-version: '17'
 
       - name: Change to the project directory
-        run: cd '${{ env.PACKAGE_DIRECTORY }}'
+        run: |
+          cd "${{ env.PACKAGE_DIRECTORY }}"
+          echo "Current directory: $(pwd)"
 
       - name: Build with Maven
         run: mvn clean install
