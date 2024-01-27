@@ -39,4 +39,4 @@ jobs:
         with:
           app-name: java-projectdev
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'my/target/*.jar'
+          package: 'bh-dev-rest 2/*.jar'
