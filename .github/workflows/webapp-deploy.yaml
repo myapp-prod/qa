@@ -20,12 +20,16 @@ jobs:
       name: dev
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout GitHub Action
+        uses: actions/checkout@v4
 
       - name: Set up Java version
         uses: actions/setup-java@v1
         with:
           java-version: '17'
+
+      - name: Change to the project directory
+        run: cd '${{ env.PACKAGE_DIRECTORY }}'
 
       - name: Build with Maven
         run: mvn clean install
@@ -34,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/${{ env.PACKAGE_DIRECTORY }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
