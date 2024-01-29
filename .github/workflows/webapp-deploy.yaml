@@ -1,7 +1,7 @@
 name: Deploy Java project to Azure webapp
 
 on:
-  push:
+  workflow_dispatch:
 
 env:
   AZURE_WEBAPP_NAME: java-projectdev
