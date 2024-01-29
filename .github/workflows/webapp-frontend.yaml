@@ -57,7 +57,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: arngualr-artifact
+          name: bh-dev-frondend
 
       - name: Unzip artifact for deployment
         run: unzip -o release.zip
