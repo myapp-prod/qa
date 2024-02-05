@@ -1,7 +1,7 @@
 name: Azure-Angular frontend
 
 on:
-  workflow_dispatch:
+  push:
 
 env:
   AZURE_WEBAPP_NAME: 'angular-app-bh'
