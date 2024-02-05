@@ -1,0 +1,37 @@
+name: adf-RAIS-Data migrations
+
+on:
+  push:
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    environment:
+      name: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          path: ./  # Checkout to the root directory
+
+       # Log into Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+          enable-AzPSSession: true
+
+      # Deploy ARM template
+      - name: Deploy ARM Template
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          region: East US
+          resourceGroupName: DefaultResourceGroup-EUS
+          template: adf-create.bicep
+          #parameters: ${{secrets.parametersFile}} sqlsourceUserId=${{secrets.SQLSOURCEUSERID}} sqlsourcePassword=${{secrets.SQLSOURCEPASSWORD}} sqlsinkUserId=${{secrets.SQLSINKUSERID}} sqlsinkPassword=${{secrets.SQLSINKPASSWORD}} sourceSqlServer=${{secrets.SOURCESQLSERVER}} sinkSqlServer=${{secrets.SINKSQLSERVER}} 
+
+     
