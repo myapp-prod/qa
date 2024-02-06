@@ -1,0 +1,23 @@
+name: Bh-javaapp-backend
+
+on:
+   push:
+
+  
+permissions:
+  id-token: write
+  contents: read  
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    environment:
+      name: dev
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      
