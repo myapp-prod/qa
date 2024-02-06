@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: subuntu-latest
+    runs-on: ubuntu-latest
     environment:
       name: dev
 
