@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: java-projectdev
+  AZURE_WEBAPP_NAME: backednjava
   # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: 'bh-dev-rest 2' # set this to the directory which contains pom.xml file
+  PACKAGE_DIRECTORY: 'helloazure' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
           java-version: '17'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        working-directory: 'bh-dev-rest 2'
+        working-directory: 'helloazure'
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -39,4 +39,4 @@ jobs:
         with:
           app-name: java-projectdev
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'bh-dev-rest 2/.mvn/wrapper/*.jar'
+          package: '*.jar'
