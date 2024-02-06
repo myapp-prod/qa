@@ -1,7 +1,7 @@
 name: Bh-javaapp-backend
 
 on:
-  push:
+  workflow_dispatch:
 
 env:
   AZURE_WEBAPP_NAME: backendjava
