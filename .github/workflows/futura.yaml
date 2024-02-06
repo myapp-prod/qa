@@ -1,10 +1,10 @@
 name: Bh-javaapp-backend
 
 on:
-  push:
+ push:
 
 env:
-  AZURE_WEBAPP_NAME: backendjava
+  AZURE_WEBAPP_NAME: backendjava 
   AZURE_WEBAPP_PACKAGE_PATH: helloazure
   JAVA_VERSION: '17'
 
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: subuntu-latest
     environment:
       name: dev
 
@@ -33,16 +33,11 @@ jobs:
           maven-version: 3.2.1
 
       - name: Upload artifact for deployment job
-        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app
           path: 'helloazure/target/helloazure-0.0.1-SNAPSHOT.jar'
-      
-      - name: Get uploaded artifact name and path
-        run: |
-          echo "Artifact Name: ${{ steps.upload-artifact.outputs.artifact-name }}"
-          echo "Artifact Path: ${{ steps.upload-artifact.outputs.artifact-path }}"
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,15 +53,9 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
 
       - name: Download artifact from build job
-        id: download-artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
-      - name: Get downloaded artifact name and path
-        run: |
-          echo "Artifact Name: ${{ steps.download-artifact.outputs.artifact-name }}"
-          echo "Artifact Path: ${{ steps.download-artifact.outputs.artifact-path }}"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -75,3 +64,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: 'helloazure/target/helloazure-0.0.1-SNAPSHOT.jar'
