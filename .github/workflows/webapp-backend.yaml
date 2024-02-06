@@ -1,7 +1,7 @@
 name: Deploy Java project to Azure webapp
 
 on:
-  workflow_dispatch:
+  push:
 
 env:
   AZURE_WEBAPP_NAME: backednjava
