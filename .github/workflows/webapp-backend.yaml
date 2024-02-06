@@ -1,23 +1,31 @@
-name: Deploy Java project to Azure webapp
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name:  Azure Web App
 
 on:
   push:
 
 env:
-  AZURE_WEBAPP_NAME: backednjava
-  # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: 'helloazure' # set this to the directory which contains pom.xml file
-  JAVA_VERSION: '17' # set this to the java version to use
+  AZURE_WEBAPP_NAME: backendjava   # set this to your application's name
+  JAVA_VERSION: '17'                  # set this to the Java version to use
 
 permissions:
   id-token: write
-  contents: read
+  contents: read  
+
+
+    
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: dev
 
     steps:
       - name: Checkout GitHub Action
@@ -27,20 +35,34 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
+          cache: 'maven'
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
-        working-directory: 'helloazure'
+        run: mvn clean install
 
-      - name: Azure Login
-        uses: azure/login@v1
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}' 
+          name: java-app
+          path: '${{ github.workspace }}/helloazure/target/*.jar'
 
-      - name: Azure WebApp
-        uses: Azure/webapps-deploy@v2
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
         with:
-          app-name: backednjava
-          resource-group-name: dev
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: '/target/helloazure-0.0.1-SNAPSHOT.jar'
+          package: '.jar'
