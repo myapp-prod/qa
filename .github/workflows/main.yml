@@ -1,23 +1,41 @@
-name: Bh-javaapp-backend
-
-on:
-   workflow_dispatch:
-
-  
+name: AzureSpringApps
+on: push
+env:
+  ASC_PACKAGE_PATH: ${{ github.workspace }}helloazure/
 permissions:
   id-token: write
   contents: read  
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment:
       name: dev
-
+    name: deploy to production with artifact
     steps:
-      - name: Azure Login
+      - name: Checkout GitHub Action
+        uses: actions/checkout@v2
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: maven build, clean
+        run: |
+          mvn clean package
+
+      - name: Login via Azure CLI
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v1
+        with:
+          app-name: backednjava
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.ASC_PACKAGE_PATH }}/**/*.jar
