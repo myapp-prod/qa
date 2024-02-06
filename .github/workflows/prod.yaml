@@ -26,6 +26,7 @@ jobs:
 
       - name: Build Project
         run: mvn clean install -DskipTests
+        working-directory: '${{ github.workspace }}/helloazure'
 
       - name: Upload Artifact for deployment job
         uses: actions/upload-artifact@v2
