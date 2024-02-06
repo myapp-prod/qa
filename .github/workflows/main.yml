@@ -25,6 +25,7 @@ jobs:
       - name: maven build, clean
         run: |
           mvn clean package
+        working-directory: '${{ github.workspace }}/helloazure'  
 
       - name: Login via Azure CLI
         uses: azure/login@v1
