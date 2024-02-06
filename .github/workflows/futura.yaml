@@ -63,4 +63,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'helloazure/target/helloazure-0.0.1-SNAPSHOT.jar'
+         
