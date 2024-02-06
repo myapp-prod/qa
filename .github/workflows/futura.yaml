@@ -1,15 +1,18 @@
-name: futura-app
+
+
+name:  JAR app to Azure Web App
 
 on:
   push:
 
 env:
-  AZURE_WEBAPP_NAME: backednjava   # set this to your application's name
-  JAVA_VERSION: '17'                # set this to the Java version to use
+  AZURE_WEBAPP_NAME: backendjava  # set this to your application's name
+  JAVA_VERSION: '17'                  # set this to the Java version to use
 
 permissions:
   id-token: write
-  contents: read  
+  contents: read
+    
 
 jobs:
   build:
@@ -27,13 +30,12 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        working-directory: 'helloazure'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/helloazure-0.0.1-SNAPSHOT.jar'
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,12 +53,12 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'     
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'       
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: Azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: '${{ github.workspace }}/java-app/*.jar'
+          package: '*.jar'
