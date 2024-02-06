@@ -1,8 +1,8 @@
-name: Bh-javaapp-backend
+name: futura-dev
 
 on:
- workflow_dispatch:
-   
+  push:
+    
 
 env:
   AZURE_WEBAPP_NAME: backendjava 
@@ -33,12 +33,17 @@ jobs:
         with:
           maven-version: 3.2.1
 
+      - name: Build JAR file
+        run: mvn package
+
+      - name: Verify JAR file
+        run: ls -R helloazure/target/
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
           path: 'helloazure/target/helloazure-0.0.1-SNAPSHOT.jar'
-
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,6 +63,9 @@ jobs:
         with:
           name: java-app
 
+      - name: Verify downloaded artifact
+        run: ls -R java-app
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v1
@@ -65,4 +73,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'helloazure/target/helloazure-0.0.1-SNAPSHOT.jar'
+          package: 'java-app/helloazure-0.0.1-SNAPSHOT.jar'
