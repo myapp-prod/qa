@@ -27,16 +27,20 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '17'
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
         working-directory: 'helloazure'
+
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}' 
+
       - name: Azure WebApp
         uses: Azure/webapps-deploy@v2
         with:
           app-name: backednjava
+          resource group: dev
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: '*.jar'
