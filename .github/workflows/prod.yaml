@@ -1,0 +1,57 @@
+name: prod app service
+
+on:
+  push:
+    
+
+permissions:
+  id-token: write
+  contents: read  
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Project
+        run: mvn clean install -DskipTests
+
+      - name: Upload Artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: springboot-example
+          path: ${{ github.workspace }}/target/*.jar
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    needs: build-and-deploy
+    steps:
+      - name: Download Artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: springboot-example
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: backendjava
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          package: '*.jar'
