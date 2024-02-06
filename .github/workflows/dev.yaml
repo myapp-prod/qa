@@ -33,8 +33,6 @@ jobs:
         with:
           maven-version: 3.2.1
 
-      - name: Build JAR file
-        run: mvn package
 
       - name: Verify JAR file
         run: ls -R helloazure/target/
