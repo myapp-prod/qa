@@ -1,5 +1,5 @@
 name: AzureSpringApps
-on: push
+on: workflow_dispatch
 env:
   ASC_PACKAGE_PATH: ${{ github.workspace }}helloazure/
 permissions:
