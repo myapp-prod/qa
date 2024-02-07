@@ -59,7 +59,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'Contributorwebapp'
+          app-name: 'backednjava'
           slot-name: 'Production'
           package: '*.jar'
-          resource-group-name: Contributorwebapp_group
+          resource-group-name: dev
