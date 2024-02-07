@@ -39,4 +39,4 @@ jobs:
         app-name: backendjava
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: '${{ github.workspace }}/demo/target/.jar'
+        package: /home/runner/work/qa/qa/demo/target/demo-0.0.1-SNAPSHOT.jar
