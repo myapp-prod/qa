@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: bh
+name: bh-dev-javajar
 
 on:
   push:
@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'backednjava'
           slot-name: 'Production'
-          package: '${{ github.workspace }}/demo/target/demo-0.0.1-SNAPSHOT.jar'
+          package: '*.jar'
           resource-group-name: dev
