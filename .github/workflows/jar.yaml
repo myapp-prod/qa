@@ -60,7 +60,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           resource-group-name: dev
-          app-name: 'testdevapp123'
+          app-name: 'jarbh'
           slot-name: 'Production'
           package: '*.jar'
           
