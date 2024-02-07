@@ -62,4 +62,4 @@ jobs:
           app-name: 'Contributorwebapp'
           slot-name: 'Production'
           package: '*.jar'
-          resource-group-name: 'Contributorwebapp_group'
+          resource-group-name: Contributorwebapp_group
