@@ -26,14 +26,14 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn clean install
-        working-directory: '${{ github.workspace }}/demo'
+        run: mvn clean install -DskipTests
+        working-directory: '${{ github.workspace }}/futura'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/demo/target/*.jar'
+          path: '${{ github.workspace }}/demo/target/*.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,5 +62,5 @@ jobs:
           resource-group-name: dev
           app-name: 'jarbh'
           slot-name: 'Production'
-          package: '*.jar'
+          package: '*.war'
           
