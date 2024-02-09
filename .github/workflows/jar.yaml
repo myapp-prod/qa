@@ -59,8 +59,8 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          resource-group-name: javapp-new_group
-          app-name: 'javapp-new'
+          resource-group-name: dev
+          app-name: 'azurejavadev'
           slot-name: 'Production'
           package: '*.jar'
           
