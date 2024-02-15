@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/hello")
     public String hello(){
-        return "Hello from AZURE WEBAPP SERVICE FROM FUTURA BH COMAPNAY sdhhfs hsjgfhgsgfjkhsjvb ds nfbhajfklahlhfklasjhfs nhfsufs nshkfksfjsjhjefiuemfnjshuaehfuasufajfodr";
+        return "Hello from AZURE WEBAPP SERVICE ";
     }
     
 }
