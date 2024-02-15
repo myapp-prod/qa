@@ -58,7 +58,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'dtdc'
+          app-name: 'kudroliworld'
           resource-group-name: dev
           slot-name: 'Production'
           package: '*.jar'
