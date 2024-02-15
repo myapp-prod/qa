@@ -1,5 +1,3 @@
-
-
 name: deployment webapp jar file 
 
 on:
@@ -62,4 +60,4 @@ jobs:
           resource-group-name: dev
           slot-name: 'Production'
           package: '*.jar'
-          
+          startup-command: 'java -jar *.jar'
