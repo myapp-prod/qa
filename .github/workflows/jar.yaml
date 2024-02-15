@@ -1,6 +1,6 @@
 
 
-name: java jar deployment
+name: deployment webapp jar file 
 
 on:
   push:
@@ -58,7 +58,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'futura-bh-java-se'
+          app-name: 'futura-dev-app'
           resource-group-name: dev
           slot-name: 'Production'
           package: '*.jar'
