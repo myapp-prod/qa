@@ -66,4 +66,4 @@ jobs:
         with:
           azPSVersion: 'latest'
           inlineScript: |
-            az webapp stop --name demolab-1 --resource-group dev
+            az webapp start --name demolab-1 --resource-group dev
