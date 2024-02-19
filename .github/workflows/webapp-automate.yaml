@@ -1,7 +1,7 @@
-name: deployment webapp jar file 
+name: deployment webapp jar file
 
 on:
-  workflow_dispatch:
+  push:
 
 permissions:
   id-token: write
@@ -56,8 +56,14 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'futura-bh-java-se'
+          app-name: 'demolab-1'
           resource-group-name: dev
           slot-name: 'Production'
           package: '*.jar'
           
+      - name: Use Azure PowerShell
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: 'latest'
+          inlineScript: |
+            az webapp stop --name demolab-1 --resource-group dev
