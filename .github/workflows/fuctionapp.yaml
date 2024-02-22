@@ -1,7 +1,6 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
-# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Java project to Azure Function App - myappfuctions
+
+name: Azure Function App - myappfuctions
 
 on:
   push:
@@ -9,7 +8,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: myappfuctions # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: '${{ github.workspace }}/demo' # set this to the directory which contains pom.xml file
+  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -34,7 +33,7 @@ jobs:
       - name: 'Restore Project Dependencies Using Mvn'
         shell: pwsh
         run: |
-          pushd '${{ github.workspace }}/demo'
+          pushd '${{ github.workspace }}/azure fuctions'
           mvn clean package
           popd
       
