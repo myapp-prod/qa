@@ -1,7 +1,7 @@
 name: Bh-javaapp-backend
 
 on:
-  push:
+  workflow_dispatch:
 env:
   PRODUCT_VERSION: "latest"
   SSL_CERT_DIR: "/etc/pki/tls/certs"
