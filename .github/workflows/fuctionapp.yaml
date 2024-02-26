@@ -1,14 +1,11 @@
-
-
 name: Azure Function App - myappfuctions
 
 on:
-  workflow_dispatch:
-    
+  push:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: bh-futura # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
+  AZURE_FUNCTIONAPP_NAME: dev-test12 # set this to your function app name on Azure
+  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure_functions' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -33,10 +30,17 @@ jobs:
       - name: 'Restore Project Dependencies Using Mvn'
         shell: pwsh
         run: |
-          pushd '${{ github.workspace }}/azure fuctions'
+          pushd '${{ github.workspace }}/azure_functions'
           mvn clean package
           popd
-      
+
+      - name: 'Create Deployment ZIP File'
+        run: |
+          pushd '${{ github.workspace }}/azure_functions/target'
+          zip -r deployment.zip .
+          mv deployment.zip '${{ github.workspace }}'
+          popd
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -48,5 +52,5 @@ jobs:
         with:
           app-name: 'bh-futura'
           slot-name: 'production'
-          package: '${{ env.PACKAGE_DIRECTORY }}'
+          package: '${{ github.workspace }}/deployment.zip'
           respect-pom-xml: true
