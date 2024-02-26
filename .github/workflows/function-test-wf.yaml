@@ -40,5 +40,5 @@ jobs:
         with:
           app-name: 'dev-test12'
           slot-name: 'production'
-          package: '${{ env.JAR_FILE_PATH }}' # Use the specified JAR file directly
+          package: '*.jar' # Use the specified JAR file directly
           respect-pom-xml: false # No need to respect pom.xml since we're not using Maven
