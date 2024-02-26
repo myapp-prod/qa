@@ -1,14 +1,11 @@
-
-
-name: Azure Function App - myappfuctions
+name: Azure Function App - myappfunctions
 
 on:
-  workflow_dispatch:
-    
+  push:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: bh-futura # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
+  AZURE_FUNCTIONAPP_NAME: dev-test12 # set this to your function app name on Azure
+  JAR_FILE_PATH: '${{ github.workspace }}/azure fuctions/target/azure-1.0-SNAPSHOT.jar' # specify the path to your JAR file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -30,13 +27,8 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
 
-      - name: 'Restore Project Dependencies Using Mvn'
-        shell: pwsh
-        run: |
-          pushd '${{ github.workspace }}/azure fuctions'
-          mvn clean package
-          popd
-      
+      # No Maven build step is needed as we are using a pre-built JAR file
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -46,7 +38,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'bh-futura'
+          app-name: 'dev-test12'
           slot-name: 'production'
-          package: '${{ env.PACKAGE_DIRECTORY }}'
-          respect-pom-xml: true
+          package: '${{ env.JAR_FILE_PATH }}' # Use the specified JAR file directly
+          respect-pom-xml: false # No need to respect pom.xml since we're not using Maven
