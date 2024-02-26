@@ -1,6 +1,6 @@
 
 
-name: Azure FunctionApp - myappfuctions
+name: Azure FunctionApp - myappfuctions2
 
 on:
   push:
