@@ -33,7 +33,7 @@ jobs:
       - name: 'Restore Project Dependencies Using Mvn'
         shell: pwsh
         run: |
-          pushd '${{ github.workspace }}/azure fuctions'
+          pushd '${{ github.workspace }}'
           mvn clean package
           popd
       
