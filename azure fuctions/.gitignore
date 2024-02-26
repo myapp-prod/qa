@@ -1,6 +1,9 @@
 # Build output
 
 
+*.class
+>>>>>>> e83ceb96ddef8848100f1625009edbcfd41c61ea
+
 # Log file
 *.log
 
@@ -11,8 +14,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
-*.war
+
 *.ear
 *.zip
 *.tar.gz
