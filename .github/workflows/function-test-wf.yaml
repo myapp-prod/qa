@@ -4,7 +4,8 @@
 name: Build and deploy Java project to Azure Function App - dev-test12
 
 on:
-  push:
+  workflow_dispatch:
+    
 
 
 env:
