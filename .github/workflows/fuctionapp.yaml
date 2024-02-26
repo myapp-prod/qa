@@ -1,13 +1,13 @@
 
 
-name: Azure FunctionApp - myappfuctions2
+name: Azure Function App - myappfuctions
 
 on:
   push:
     
 
 env:
-  AZURE_FUNCTIONAPP_NAME: dtdc-call-dev # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_NAME: myappfuctions # set this to your function app name on Azure
   PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
@@ -40,13 +40,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'dtdc-call-dev'
+          app-name: 'myappfuctions'
           slot-name: 'production'
           package: '${{ env.PACKAGE_DIRECTORY }}'
           respect-pom-xml: true
