@@ -34,12 +34,6 @@ jobs:
           mvn clean package
           popd
 
-      - name: 'Create Deployment ZIP File'
-        run: |
-          pushd '${{ github.workspace }}/azure functions/target'
-          zip -r deployment.zip .
-          mv deployment.zip '${{ github.workspace }}'
-          popd
 
       - name: Login to Azure
         uses: azure/login@v1
