@@ -1,23 +1,21 @@
-name: bh-myappfuctions
+
+
+name:  Azure Function App - dev-test12
 
 on:
   push:
-    
+   
 
 env:
-  
-  AZURE_FUNCTIONAPP_NAME: dev-test12
-  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure functions' 
-  JAVA_VERSION: '17' 
-permissions:
-  id-token: write
-  contents: read   
+  AZURE_FUNCTIONAPP_NAME: dev-test12 # set this to your function app name on Azure
+  PACKAGE_DIRECTORY: 'azure functions' # set this to the directory which contains pom.xml file
+  JAVA_VERSION: '17' # set this to the java version to use
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: dev
+    runs-on: windows-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: 'Checkout GitHub Action'
@@ -28,15 +26,10 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: 3.2.1     
-
       - name: 'Restore Project Dependencies Using Mvn'
-        shell: bash
+        shell: pwsh
         run: |
-          pushd '${{ github.workspace }}'
+          pushd './${{ env.PACKAGE_DIRECTORY }}'
           mvn clean package
           popd
       
@@ -44,11 +37,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: function-app   
 
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
@@ -58,3 +46,4 @@ jobs:
           slot-name: 'production'
           package: '${{ env.PACKAGE_DIRECTORY }}'
           respect-pom-xml: true
+          
