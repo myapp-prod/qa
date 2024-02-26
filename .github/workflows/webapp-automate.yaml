@@ -1,7 +1,7 @@
 name: deployment webapp jar file
 
 on:
-  push:
+  workflow_dispatch:
 
 permissions:
   id-token: write
