@@ -46,5 +46,5 @@ jobs:
         with:
           app-name: 'bh-futura'
           slot-name: 'production'
-          package: '${{ github.workspace }}/deployment.zip'
+          package: '${{ github.workspace }}/azure functions'
           respect-pom-xml: true
