@@ -40,5 +40,5 @@ jobs:
         with:
           app-name: 'dev-test12'
           slot-name: 'production'
-          package: '*.jar' # Use the specified JAR file directly
+          package: 'azure functions/target/azure-1.0-SNAPSHOT.jar' # Use the specified JAR file directly
           respect-pom-xml: false # No need to respect pom.xml since we're not using Maven
