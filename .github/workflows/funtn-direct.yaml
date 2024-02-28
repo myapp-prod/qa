@@ -27,5 +27,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Upload JAR file to Azure Function App
-        run: az functionapp deployment source config-zip --resource-group dev --name dtdc-call-dev --src azure-functions/target/azure-1.0-SNAPSHOT.jar
+      - name: Use Azure PowerShell
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: 'latest'
+          inlineScript: |
+            az functionapp deployment source config-zip --resource-group dev --name dtdc-call-dev --src azure-functions/target/azure-1.0-SNAPSHOT.jar
