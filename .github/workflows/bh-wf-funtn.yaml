@@ -1,58 +1,58 @@
 
 
-name:  Azure Function App 
+  name:  Azure Function App 
 
-on:
-  push:
-   
+  on:
+    workflow_dispatch:
+    
 
-env:
-  AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
-  PACKAGE_DIRECTORY: 'azure functions' 
-  JAVA_VERSION: '17' # set this to the java version to use
+  env:
+    AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
+    PACKAGE_DIRECTORY: 'azure functions' 
+    JAVA_VERSION: '17' # set this to the java version to use
 
-permissions:
-  id-token: write
-  contents: read  
+  permissions:
+    id-token: write
+    contents: read  
 
-jobs:
-  build-and-deploy:
-    runs-on: self-hosted
-    environment:
-      name: dev
+  jobs:
+    build-and-deploy:
+      runs-on: self-hosted
+      environment:
+        name: dev
 
-    steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v4
+      steps:
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@v4
 
-      - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ env.JAVA_VERSION }}
+        - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
+          uses: actions/setup-java@v1
+          with:
+            java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: 3.2.1    
+        - name: Set up Maven
+          uses: stCarolas/setup-maven@v4.5
+          with:
+            maven-version: 3.2.1    
 
-      - name: 'Restore Project Dependencies Using Mvn'
-        shell: bash
-        run: |
-          pushd './${{ env.PACKAGE_DIRECTORY }}'
-          mvn clean package
-          popd
-      
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        - name: 'Restore Project Dependencies Using Mvn'
+          shell: bash
+          run: |
+            pushd './${{ env.PACKAGE_DIRECTORY }}'
+            mvn clean package
+            popd
+        
+        - name: Login to Azure
+          uses: azure/login@v1
+          with:
+            creds: '${{ secrets.AZURE_CREDENTIALS }}'
 
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: 'dtdc-call-dev'
-          slot-name: 'production'
-          package: '${{ env.PACKAGE_DIRECTORY }}'
-          respect-pom-xml: true
-          
+        - name: 'Run Azure Functions Action'
+          uses: Azure/functions-action@v1
+          id: fa
+          with:
+            app-name: 'dtdc-call-dev'
+            slot-name: 'production'
+            package: '${{ env.PACKAGE_DIRECTORY }}'
+            respect-pom-xml: true
+            
