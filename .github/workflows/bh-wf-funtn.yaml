@@ -1,14 +1,14 @@
 
 
-name:  Azure Function App - dev-test12
+name:  Azure Function App 
 
 on:
   push:
    
 
 env:
-  AZURE_FUNCTIONAPP_NAME: dev-test12 # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: 'azure functions' # set this to the directory which contains pom.xml file
+  AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
+  PACKAGE_DIRECTORY: 'azure functions' 
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment:
       name: dev
 
@@ -46,7 +46,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'dev-test12'
+          app-name: 'dtdc-call-dev'
           slot-name: 'production'
           package: '${{ env.PACKAGE_DIRECTORY }}'
           respect-pom-xml: true
