@@ -30,6 +30,11 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
 
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.2.1    
+
       - name: 'Restore Project Dependencies Using Mvn'
         shell: bash
         run: |
