@@ -1,8 +1,14 @@
-name: Deploy Azure Function App
+name:  Azure Function App - dev-test12
 
 on:
   push:
-    
+   
+
+env:
+  
+  AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
+  PACKAGE_DIRECTORY: 'azure functions' 
+  JAVA_VERSION: '17' 
 permissions:
   id-token: write
   contents: read  
@@ -14,22 +20,36 @@ jobs:
       name: dev
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
 
-      - name: Set up Azure CLI
-        uses: azure/CLI@v1
+      - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v1
         with:
-          azcliversion: latest
+          java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Deploy to Azure Function App
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.2.1    
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/azure functions/target/azure-1.0-SNAPSHOT.jar'
+      
+      - name: Login to Azure
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
 
-      - name: Use Azure PowerShell
-        uses: azure/powershell@v1
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
         with:
-          azPSVersion: 'latest'
-          inlineScript: |
-            az functionapp deployment source config-zip --resource-group dev --name dtdc-call-dev --src azure-functions/target/azure-1.0-SNAPSHOT.jar
+          app-name: 'dtdc-call-dev'
+          slot-name: 'production'
+          package: 'azure functions'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          respect-pom-xml: true
