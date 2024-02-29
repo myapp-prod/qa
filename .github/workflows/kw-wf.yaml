@@ -1,4 +1,4 @@
-name: Build kw
+name:  kw
 
 on:
   push:
