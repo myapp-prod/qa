@@ -1,0 +1,62 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name:  Azure Function App 
+on:
+  push:
+    
+env:
+  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
+  PACKAGE_DIRECTORY: './azure functions/target/azure-1.0-SNAPSHOT.jar' # set this to the directory which contains pom.xml file
+  JAVA_VERSION: '17' # set this to the java version to use
+
+permissions:
+  id-token: write
+  contents: read   
+
+jobs:
+  build-and-deploy:
+    runs-on:  self-hosted
+    environment:
+      name: dev
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.2.1    
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/azure functions/target/azure-1.0-SNAPSHOT.jar'
+      
+      - name: Setup Azure CLI
+        run: |
+          # Add commands to ensure Azure CLI is installed and available in the PATH
+          # Example: 
+          sudo apt-get update && sudo apt-get install -y azure-cli
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'dev-bh-test'
+          slot-name: 'production'
+          package: 'azure functions'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          respect-pom-xml: true
