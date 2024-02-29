@@ -6,7 +6,7 @@ on:
   push:
     
 env:
-  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_NAME: 'tkvuy' # set this to your function app name on Azure
   PACKAGE_DIRECTORY: './azure functions/target/azure-1.0-SNAPSHOT.jar' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
@@ -55,7 +55,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'dev-bh-test'
+          app-name: 'tkvuy'
           slot-name: 'production'
           package: 'azure functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
