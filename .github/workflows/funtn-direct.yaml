@@ -1,4 +1,4 @@
-name:  Azure Function App - dev-test12
+name:  Azure Function App - dev-test
 
 on:
   push:
