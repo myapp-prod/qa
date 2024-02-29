@@ -1,7 +1,7 @@
 name:  Azure Function App - dev-test
 
 on:
-  push:
+  workflow_dispatch:
    
 
 env:
