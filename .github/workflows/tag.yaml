@@ -1,0 +1,65 @@
+name: Azure github tag-release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main  # Adjust to your main branch name
+  release:
+    types: [published]
+
+env:
+  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test'
+  PACKAGE_DIRECTORY: 'azure functions'
+  JAVA_VERSION: '17'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    environment:
+      name: dev
+
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      # Your existing steps here...
+
+      - name: Tag the deployment
+        if: always()  # Always run this step, even if previous steps fail
+        run: git tag -a v1.0 -m "Release v1.0"
+      
+      - name: Push the tag
+        if: always()
+        run: git push origin --tags
+
+      - name: Create Release
+        if: github.event_name == 'release'
+        run: |
+          echo "::set-env name=RELEASE_NAME::${{ github.event.release.tag_name }}"
+          echo "::set-env name=RELEASE_BODY::${{ github.event.release.body }}"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/azure functions/target/azure-1.0-SNAPSHOT.jar'
+      
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'dev-bh-test'
+          slot-name: 'production'
+          package: 'azure functions'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+          respect-pom-xml: true
