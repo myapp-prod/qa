@@ -1,14 +1,12 @@
-
-
-name: Azure Function App - myappfuctions
+name:  kw
 
 on:
-  workflow_dispatch:
-    
+  push:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: bh-futura # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
+
+  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
+  PACKAGE_DIRECTORY: './azure functions' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -17,9 +15,11 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on:  self-hosted
     environment:
       name: dev
+    permissions:
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: 'Checkout GitHub Action'
@@ -31,9 +31,9 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: 'Restore Project Dependencies Using Mvn'
-        shell: pwsh
+        shell: bash
         run: |
-          pushd '${{ github.workspace }}'
+          pushd './${{ env.PACKAGE_DIRECTORY }}'
           mvn clean package
           popd
       
@@ -46,7 +46,8 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'bh-futura'
+          app-name: 'dev-bh-test'
           slot-name: 'production'
           package: '${{ env.PACKAGE_DIRECTORY }}'
           respect-pom-xml: true
+          

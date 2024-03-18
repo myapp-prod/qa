@@ -1,22 +1,21 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+name:  Azure Function App - dev-test
 
-name: Build and deploy Java project to Azure Function App 
 on:
-  push:
-    
-env:
-  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: './azure functions/target/azure-1.0-SNAPSHOT.jar' # set this to the directory which contains pom.xml file
-  JAVA_VERSION: '17' # set this to the java version to use
+  workflow_dispatch:
+   
 
+env:
+  
+  AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
+  PACKAGE_DIRECTORY: 'azure functions' 
+  JAVA_VERSION: '17' 
 permissions:
   id-token: write
-  contents: read   
+  contents: read  
 
 jobs:
   build-and-deploy:
-    runs-on:  self-hosted
+    runs-on: self-hosted
     environment:
       name: dev
 
@@ -49,7 +48,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'dev-bh-test'
+          app-name: 'dtdc-call-dev'
           slot-name: 'production'
           package: 'azure functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
