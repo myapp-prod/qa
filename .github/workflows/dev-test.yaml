@@ -3,7 +3,7 @@
 
 name:  Azure Function App 
 on:
-  push:
+   workflow_dispatch:
     
 env:
   AZURE_FUNCTIONAPP_NAME: 'tkvuy' # set this to your function app name on Azure
