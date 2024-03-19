@@ -59,5 +59,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.MY_TAG_GITHUB_TOKEN }} 
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}     
+          #tag_name: ${{ github.run_number }}
+          #release_name: Release ${{ github.run_number }}     
+          tag_name: v1.0.0.1
+          release_name: Release v1.0.0.1
