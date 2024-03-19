@@ -2,7 +2,7 @@
 
 name: Build and deploy Java project to Azure Function App 
 on:
-   workflow_dispatch:
+   push:
     
 env:
   AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
@@ -53,3 +53,12 @@ jobs:
           package: 'azure functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
           respect-pom-xml: true
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_TAG_GITHUB_TOKEN }} 
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }} 
