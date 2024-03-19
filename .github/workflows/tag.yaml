@@ -45,7 +45,7 @@ jobs:
         with:
           app-name: 'dev-bh-test'
           slot-name: 'production'
-          package: '${{ env.PACKAGE_DIRECTORY }}'
+          package: '${{ env.PACKAGE_DIRECTORY }}/azure functions'
           respect-pom-xml: true
 
       - name: Create Release
