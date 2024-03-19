@@ -1,7 +1,7 @@
 name: GithuAction-wf
 
 on:
-  workflow_dispatch:
+
   push:
     tags:
       - '*'
