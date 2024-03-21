@@ -1,7 +1,7 @@
 name:  kw
 
 on:
-  push:
+    workflow_dispatch:
 
 env:
 

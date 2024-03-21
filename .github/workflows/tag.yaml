@@ -1,12 +1,11 @@
+name: GithuAction-wf
 
-
-name: Build and deploy Java project to Azure Function App 
 on:
-   push:
+  workflow_dispatch:
     
 env:
-  AZURE_FUNCTIONAPP_NAME: 'dev-bh-test' # set this to your function app name on Azure
-  PACKAGE_DIRECTORY: './azure functions/target/azure-1.0-SNAPSHOT.jar' # set this to the directory which contains pom.xml file
+  AZURE_FUNCTIONAPP_NAME: dev-bh-test # set this to your function app name on Azure
+  PACKAGE_DIRECTORY: '${{ github.workspace }}/azure fuctions' # set this to the directory which contains pom.xml file
   JAVA_VERSION: '17' # set this to the java version to use
 
 permissions:
@@ -15,7 +14,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on:  windows-latest
+    runs-on: windows-latest
     environment:
       name: dev
 
@@ -28,16 +27,12 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
 
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.5
-        with:
-          maven-version: 3.2.1    
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: java-app
-          path: '${{ github.workspace }}/azure functions/target/azure-1.0-SNAPSHOT.jar'
+      - name: 'Restore Project Dependencies Using Mvn'
+        shell: pwsh
+        run: |
+          pushd '${{ github.workspace }}/azure functions'
+          mvn clean package
+          popd
       
       - name: Login to Azure
         uses: azure/login@v1
@@ -51,7 +46,6 @@ jobs:
           app-name: 'dev-bh-test'
           slot-name: 'production'
           package: 'azure functions'
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
           respect-pom-xml: true
 
       - name: Create Release
@@ -61,4 +55,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MY_TAG_GITHUB_TOKEN }} 
         with:
           tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }} 
+          release_name: Release ${{ github.run_number }}  

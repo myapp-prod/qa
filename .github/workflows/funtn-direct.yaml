@@ -1,12 +1,12 @@
-name:  Azure Function App - dev-test
+name:   App - dev-test
 
 on:
-  workflow_dispatch:
+  push:
    
 
 env:
   
-  AZURE_FUNCTIONAPP_NAME: 'dtdc-call-dev' 
+  AZURE_FUNCTIONAPP_NAME: 'dev-app123' 
   PACKAGE_DIRECTORY: 'azure functions' 
   JAVA_VERSION: '17' 
 permissions:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: windows-latest
     environment:
       name: dev
 
@@ -48,8 +48,18 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'dtdc-call-dev'
+          app-name: 'dev-app123'
           slot-name: 'production'
           package: 'azure functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
           respect-pom-xml: true
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_TAG_GITHUB_TOKEN }} 
+        with:
+          #tag_name: ${{ github.run_number }}
+          #release_name: Release ${{ github.run_number }}     
+          tag_name: v3.0.0.2
+          release_name: Release v3.0.0.2
