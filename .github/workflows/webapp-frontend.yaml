@@ -1,11 +1,11 @@
 name: Azure-Angular frontend
 
 on:
-  workflow_dispatch:
+  push:
 
 env:
-  AZURE_WEBAPP_NAME: 'angular-app-bh'
-  AZURE_WEBAPP_PACKAGE_PATH: 'dtdc/dist/dtdc'
+  AZURE_WEBAPP_NAME: 'mywebapp12123'
+  AZURE_WEBAPP_PACKAGE_PATH: 'bh-dev-frondend/dist'
   NODE_VERSION: '18'  
 
 permissions:
