@@ -2,6 +2,7 @@ name:   App - dev-test
 
 on:
   push:
+    
    
 
 env:
@@ -61,5 +62,5 @@ jobs:
         with:
           #tag_name: ${{ github.run_number }}
           #release_name: Release ${{ github.run_number }}     
-          tag_name: v3.0.0.2
-          release_name: Release v3.0.0.2
+          tag_name: v3.0.0.3
+          release_name: Release v3.0.0.3
